@@ -8,11 +8,15 @@ import java.util.Random;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @SpringBootApplication
+@EnableDiscoveryClient
 public class SayHelloApplication {
 
 	private static Logger log = LoggerFactory.getLogger(SayHelloApplication.class);
@@ -30,6 +34,16 @@ public class SayHelloApplication {
 
 		int randomNum = rand.nextInt(greetings.size());
 		return greetings.get(randomNum);
+	}
+
+	@GetMapping("/ping")
+	public String ping() {
+		return "pong";
+	}
+
+	@GetMapping("/my-health-check")
+	public ResponseEntity<String> myCustomCheck() {
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	@GetMapping("/")
